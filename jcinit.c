@@ -19,6 +19,7 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 
+#include "config.h"
 
 /*
  * Master selection of compression modules.
