@@ -49,10 +49,16 @@ JPEGTURBO_SRC_FILES += \
 	jdatadst-tj.c jdatasrc-tj.c
 
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-# Enable support for NEON optimization. Note that cpu features will be
-# detected at runtime, and NEON instruction will be executed if and only
-# if cpu has NEON feature
-JPEGTURBO_CFLAGS += -D__ARM_NEON__
+# If defining __ARM_NEON__ at build time, NEON support will always
+# be enabled, without further check at runtime. Such build will
+# throw an illegal instruction signal if executed on a armv7a
+# device without NEON support (e.g. Tegra 2)
+# JPEGTURBO_CFLAGS += -D__ARM_NEON__
+
+# Runtime detection in jpeg-turbo is done parsing /proc/cpuinfo. On
+# Android, NDK provides cpufeatures library that will run this detection
+# in a more efficient way.
+# JPEGTURBO_CFLAGS += -DJPEG_USE_ANDROID_CPUFEATURES=1
 
 JPEGTURBO_SRC_FILES += \
 	simd/jsimd_arm_neon.S \
