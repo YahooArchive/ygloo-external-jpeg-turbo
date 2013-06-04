@@ -29,7 +29,9 @@
 #define HAVE_MEMSET 1
 
 /* Define if your compiler supports prototypes */
+#ifndef HAVE_PROTOTYPES
 #define HAVE_PROTOTYPES 1
+#endif
 
 /* Define to 1 if you have the <stddef.h> header file. */
 #ifndef HAVE_STDDEF_H
