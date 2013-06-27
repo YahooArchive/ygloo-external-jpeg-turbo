@@ -64,8 +64,12 @@ JPEGTURBO_SRC_FILES += \
 	simd/jsimd_arm_neon.S \
 	simd/jsimd_arm.c
 else
-# On armv6, fallback to pure C implementation
+ifeq ($(TARGET_ARCH_ABI),x86_64)
+JPEGTURBO_SRC_FILES += simd/jsimd_x86_64.c
+else
+# On armv6 or unsupported platforms, fallback to pure C implementation
 JPEGTURBO_SRC_FILES += jsimd_none.c
+endif
 endif
 
 ifeq ($(JPEG_WITH_ASHMEM),true)
