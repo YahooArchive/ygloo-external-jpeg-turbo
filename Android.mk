@@ -89,7 +89,7 @@ endif
 #	jmem-android.c
 
 JPEGTURBO_CFLAGS += -DAVOID_TABLES
-ifeq ($(DEBUG_BUILD),true)
+ifeq ($(BUILD_DEBUG),true)
 # Debug build, turn off all optimization
 JPEGTURBO_CFLAGS += -DDEBUG -UNDEBUG -O0 -g
 else
