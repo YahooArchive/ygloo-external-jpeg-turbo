@@ -2,6 +2,12 @@
 
 LOCAL_PATH:= $(call my-dir)
 
+ifeq ($(BUILD_DEBUG),)
+ifeq ($(APP_OPTIM),debug)
+BUILD_DEBUG:=true
+endif
+endif
+
 # If true, also build as a shared library
 JPEGTURBO_SHARED=false
 
@@ -96,7 +102,12 @@ else
 # Performance for this specific library requires pushing further
 # optimization level, and favor performance over code size
 JPEGTURBO_CFLAGS += -O3
-JPEGTURBO_CFLAGS += -fstrict-aliasing -fprefetch-loop-arrays
+JPEGTURBO_CFLAGS += -fstrict-aliasing
+ifneq ($(TARGET_COMPILER),clang)
+# -fprefetch-loop-arrays is a GCC specific option, not supported
+# by clang
+JPEGTURBO_CFLAGS += -fprefetch-loop-arrays
+endif
 endif
 
 # Enable tile based decode
