@@ -77,7 +77,7 @@
 /* #undef INCOMPLETE_TYPES_BROKEN */
 
 /* How to obtain function inlining. */
-#define INLINE __attribute__((always_inline))
+#define INLINE __attribute__((always_inline)) inline
 
 /* libjpeg API version */
 #define JPEG_LIB_VERSION 62
