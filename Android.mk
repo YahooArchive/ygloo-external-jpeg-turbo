@@ -14,6 +14,9 @@ JPEGTURBO_SHARED=false
 # Version of JPEG API to compile
 JPEGTURBO_CFLAGS := -DJPEG_LIB_VERSION=62
 
+# Don't allow runtime behavior change
+JPEGTURBO_CFLAGS += -DNO_GETENV
+
 # Those options are available only with API >= 70
 JPEGTURBO_WITH_ARITH:=false
 JPEGTURBO_WITH_ARITH_ENC:=false
