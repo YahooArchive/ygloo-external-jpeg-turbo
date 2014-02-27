@@ -8,6 +8,10 @@ BUILD_DEBUG:=true
 endif
 endif
 
+ifeq ($(JPEGTURBO_BUILD_TEST),)
+JPEGTURBO_BUILD_TEST:=true
+endif
+
 # If true, also build as a shared library
 JPEGTURBO_SHARED=false
 
@@ -142,6 +146,7 @@ LOCAL_LDLIBS += -fuse-ld=gold
 endif
 include $(BUILD_STATIC_LIBRARY)
 
+# Shared library
 ifeq ($(JPEGTURBO_SHARED),true)
 # Shared library
 include $(CLEAR_VARS)
@@ -164,6 +169,9 @@ endif
 include $(BUILD_SHARED_LIBRARY)
 endif
 
+# JPEG transcode command line tool
+ifeq ($(JPEGTURBO_BUILD_TEST),true)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE := jpegtran
 LOCAL_MODULE_TAGS := optional
@@ -173,3 +181,5 @@ LOCAL_SRC_FILES := rdswitch.c cdjpeg.c jpegtran.c
 LOCAL_STATIC_LIBRARIES += libyahoo_jpegturbo
 
 include $(BUILD_EXECUTABLE)
+
+endif
