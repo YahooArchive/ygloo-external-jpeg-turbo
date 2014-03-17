@@ -101,7 +101,7 @@ endif
 #JPEGTURBO_SRC_FILES += \
 #	jmem-android.c
 
-JPEGTURBO_CFLAGS += -DAVOID_TABLES
+JPEGTURBO_CFLAGS += -DAVOID_TABLES=1
 ifeq ($(BUILD_DEBUG),true)
 # Debug build, turn off all optimization
 JPEGTURBO_CFLAGS += -DDEBUG -UNDEBUG -O0 -g
