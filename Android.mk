@@ -80,8 +80,12 @@ else
 ifeq ($(TARGET_ARCH_ABI),x86_64)
 JPEGTURBO_SRC_FILES += simd/jsimd_x86_64.c
 else
-# On armv6 or unsupported platforms, fallback to pure C implementation
+ifeq ($(TARGET_ARCH_ABI),x86_)
+JPEGTURBO_SRC_FILES += simd/jsimd_i386.c
+else
+# On unsupported platforms, fallback to pure C implementation
 JPEGTURBO_SRC_FILES += jsimd_none.c
+endif
 endif
 endif
 
