@@ -2,7 +2,7 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Build number */
-#define BUILD "20130331"
+#define BUILD "20140701"
 
 /* Support arithmetic encoding */
 #undef C_ARITH_CODING_SUPPORTED
@@ -104,13 +104,13 @@
 #define PACKAGE_NAME "libjpeg-turbo"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libjpeg-turbo 1.3.0"
+#define PACKAGE_STRING "libjpeg-turbo 1.3.80"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libjpeg-turbo"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.3.0"
+#define PACKAGE_VERSION "1.3.80"
 
 /* Define if shift is unsigned */
 /* #undef RIGHT_SHIFT_IS_UNSIGNED */
@@ -119,10 +119,15 @@
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "1.3.0"
+#define VERSION "1.3.80"
 
 /* Use accelerated SIMD routines. */
-/* #undef WITH_SIMD */
+#ifndef WITH_SIMD
+#define WITH_SIMD 0
+#endif
+#if !WITH_SIMD
+#undef WITH_SIMD
+#endif
 
 /* Define to 1 if type `char' is unsigned and you are not using gcc.  */
 #ifndef __CHAR_UNSIGNED__

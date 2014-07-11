@@ -61,7 +61,11 @@ JPEGTURBO_SRC_FILES += \
 	transupp.c \
 	jdatadst-tj.c jdatasrc-tj.c
 
+ifeq ($(TARGET_ARCH_ABI),)
 TARGET_ARCH_ABI:=$(TARGET_ARCH)
+endif
+
+JPEGTURBO_CFLAGS += -I$(LOCAL_PATH)/prebuilt/include/
 
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 # If defining __ARM_NEON__ at build time, NEON support will always
@@ -78,6 +82,8 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 JPEGTURBO_SRC_FILES += \
 	simd/jsimd_arm_neon.S \
 	simd/jsimd_arm.c
+
+JPEGTURBO_CFLAGS += -DWITH_SIMD=1
 else
 ifeq ($(TARGET_ARCH_ABI),x86_64)
 JPEGTURBO_SRC_FILES += simd/jsimd_x86_64.c
@@ -97,6 +103,8 @@ JPEGTURBO_SRC_FILES += simd/jiss2int-64.asm
 JPEGTURBO_SRC_FILES += simd/jiss2fst-64.asm
 JPEGTURBO_SRC_FILES += simd/jcqnts2f-64.asm
 JPEGTURBO_SRC_FILES += simd/jiss2flt-64.asm
+
+JPEGTURBO_CFLAGS += -DWITH_SIMD=1
 else
 ifeq ($(TARGET_ARCH_ABI),TODOx86_)
 JPEGTURBO_SRC_FILES += simd/jsimd_i386.c
@@ -203,6 +211,7 @@ LOCAL_MODULE := jpegtran
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_SRC_FILES := rdswitch.c cdjpeg.c jpegtran.c
+LOCAL_CFLAGS := $(JPEGTURBO_CFLAGS)
 
 LOCAL_STATIC_LIBRARIES += libyahoo_jpegturbo
 
