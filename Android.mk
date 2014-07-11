@@ -61,6 +61,8 @@ JPEGTURBO_SRC_FILES += \
 	transupp.c \
 	jdatadst-tj.c jdatasrc-tj.c
 
+TARGET_ARCH_ABI:=$(TARGET_ARCH)
+
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 # If defining __ARM_NEON__ at build time, NEON support will always
 # be enabled, without further check at runtime. Such build will
@@ -79,8 +81,24 @@ JPEGTURBO_SRC_FILES += \
 else
 ifeq ($(TARGET_ARCH_ABI),x86_64)
 JPEGTURBO_SRC_FILES += simd/jsimd_x86_64.c
+
+JPEGTURBO_SRC_FILES += simd/jfsseflt-64.asm
+JPEGTURBO_SRC_FILES += simd/jcgrass2-64.asm
+JPEGTURBO_SRC_FILES += simd/jccolss2-64.asm
+JPEGTURBO_SRC_FILES += simd/jdcolss2-64.asm
+JPEGTURBO_SRC_FILES += simd/jcsamss2-64.asm
+JPEGTURBO_SRC_FILES += simd/jdsamss2-64.asm
+JPEGTURBO_SRC_FILES += simd/jdmerss2-64.asm
+JPEGTURBO_SRC_FILES += simd/jcqnts2i-64.asm
+JPEGTURBO_SRC_FILES += simd/jfss2fst-64.asm
+JPEGTURBO_SRC_FILES += simd/jfss2int-64.asm
+JPEGTURBO_SRC_FILES += simd/jiss2red-64.asm
+JPEGTURBO_SRC_FILES += simd/jiss2int-64.asm
+JPEGTURBO_SRC_FILES += simd/jiss2fst-64.asm
+JPEGTURBO_SRC_FILES += simd/jcqnts2f-64.asm
+JPEGTURBO_SRC_FILES += simd/jiss2flt-64.asm
 else
-ifeq ($(TARGET_ARCH_ABI),x86_)
+ifeq ($(TARGET_ARCH_ABI),TODOx86_)
 JPEGTURBO_SRC_FILES += simd/jsimd_i386.c
 else
 # On unsupported platforms, fallback to pure C implementation
@@ -143,6 +161,10 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 # If static library has to be linked inside a larger shared library later,
 # all code has to be compiled as PIC (Position Independant Code)
 LOCAL_CFLAGS += -fPIC -DPIC
+LOCAL_NASMFLAGS += -DPIC -I$(LOCAL_PATH)/simd/
+ifeq ($(TARGET_ARCH_ABI),x86_64)
+LOCAL_NASMFLAGS += -I$(LOCAL_PATH)/prebuilt/x86_64/
+endif
 
 ifneq ($(NDK_ROOT),)
 # AOSP toolchain supports gold linker
