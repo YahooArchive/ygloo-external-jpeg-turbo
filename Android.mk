@@ -1,4 +1,4 @@
-# Android (AODP and NDK) makefile for jpeg-turbo library
+# Android (AOSP and NDK) makefile for jpeg-turbo library
 
 LOCAL_PATH:= $(call my-dir)
 
@@ -146,9 +146,6 @@ ifneq ($(TARGET_COMPILER),clang)
 JPEGTURBO_CFLAGS += -fprefetch-loop-arrays
 endif
 endif
-
-# Enable tile based decode
-JPEGTURBO_CFLAGS += -DANDROID_TILE_BASED_DECODE
 
 # Static library
 include $(CLEAR_VARS)
