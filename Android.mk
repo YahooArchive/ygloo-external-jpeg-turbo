@@ -67,7 +67,20 @@ endif
 
 JPEGTURBO_CFLAGS += -I$(LOCAL_PATH)/prebuilt/include/
 
+# Determine which platform-specific optimization to enable
+JPEGTURBO_ARCH_OPTIM:=none
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+JPEGTURBO_ARCH_OPTIM:=neon
+endif
+ifeq ($(TARGET_ARCH_ABI),x86_64)
+# iOS target doesn't have a valid nasm compiler
+ifneq ($(BUILD_IOS),true)
+JPEGTURBO_ARCH_OPTIM:=x86_64
+endif
+endif
+
+
+ifeq ($(JPEGTURBO_ARCH_OPTIM),neon)
 # If defining __ARM_NEON__ at build time, NEON support will always
 # be enabled, without further check at runtime. Such build will
 # throw an illegal instruction signal if executed on a armv7a
@@ -84,8 +97,8 @@ JPEGTURBO_SRC_FILES += \
 	simd/jsimd_arm.c
 
 JPEGTURBO_CFLAGS += -DWITH_SIMD=1
-else
-ifeq ($(TARGET_ARCH_ABI),x86_64)
+endif
+ifeq ($(JPEGTURBO_ARCH_OPTIM),x86_64)
 JPEGTURBO_SRC_FILES += simd/jsimd_x86_64.c
 
 JPEGTURBO_SRC_FILES += simd/jfsseflt-64.asm
@@ -105,14 +118,13 @@ JPEGTURBO_SRC_FILES += simd/jcqnts2f-64.asm
 JPEGTURBO_SRC_FILES += simd/jiss2flt-64.asm
 
 JPEGTURBO_CFLAGS += -DWITH_SIMD=1
-else
-ifeq ($(TARGET_ARCH_ABI),TODOx86_)
+endif
+ifeq ($(JPEGTURBO_ARCH_OPTIM),x86)
 JPEGTURBO_SRC_FILES += simd/jsimd_i386.c
-else
+endif
+ifeq ($(JPEGTURBO_ARCH_OPTIM),none)
 # On unsupported platforms, fallback to pure C implementation
 JPEGTURBO_SRC_FILES += jsimd_none.c
-endif
-endif
 endif
 
 ifeq ($(JPEG_WITH_ASHMEM),true)
