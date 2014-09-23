@@ -70,7 +70,10 @@ JPEGTURBO_CFLAGS += -I$(LOCAL_PATH)/prebuilt/include/
 # Determine which platform-specific optimization to enable
 JPEGTURBO_ARCH_OPTIM:=none
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+ifneq ($(BUILD_IOS),true)
+# TODO: clang assembler from recent Xcode fails to compile GNU as jsimd_arm_neon.S
 JPEGTURBO_ARCH_OPTIM:=neon
+endif
 endif
 ifeq ($(TARGET_ARCH_ABI),x86_64)
 # iOS target doesn't have a valid nasm compiler
@@ -78,7 +81,6 @@ ifneq ($(BUILD_IOS),true)
 JPEGTURBO_ARCH_OPTIM:=x86_64
 endif
 endif
-
 
 ifeq ($(JPEGTURBO_ARCH_OPTIM),neon)
 # If defining __ARM_NEON__ at build time, NEON support will always
